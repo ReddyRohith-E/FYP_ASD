@@ -1,0 +1,128 @@
+# Large fMRI data files
+*.nii.gz
+abide1_fmri_data/
+abide_download/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+.jupyter/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.env
+
+# Model files (often large)
+*.keras
+*.pkl
+*.h5
+
+# Large fMRI data files
+*.nii.gz
+abide1_fmri_data/
+abide_download/
+*.joblib
+*.h5
+*.hdf5
+*.pb
+*.pth
+*.pt
+*.onnx
+saved_models/
+models/
+checkpoints/
+
+# Data files (if needed)
+# *.csv
+# *.tsv
+# *.xls
+# *.xlsx
+!Dataset/Harvard-Oxford\ Atlas\ (Label\ of\ Brain\ Regions).csv
+# Uncomment below if you want to include training data
+# !Dataset/Training\ Data/**/*.csv
+
+# Compressed files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Logs
+*.log
+logs/
+*.out
+
+# Images (if generated)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+figures/
+plots/
+
+# System files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.bak
+*.cache
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Documentation
+docs/_build/
+site/
+
+# Postman temp files (based on your instructions)
+**/postman-*.instructions.md
+
+*.zip
