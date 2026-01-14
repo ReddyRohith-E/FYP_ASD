@@ -11,3 +11,5 @@ tensorflow
 keras
 boto3
 sagemaker
+nibabel
+nilearn

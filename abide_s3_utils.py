@@ -15,6 +15,8 @@ from botocore.exceptions import ClientError
 from botocore import UNSIGNED
 from botocore.config import Config
 import os
+import tempfile
+
 
 # S3 Configuration
 ABIDE_BUCKET = 'fcp-indi'
@@ -125,10 +127,27 @@ class S3ABIDEClient:
                 Key=s3_path
             )
             
-            # Load directly into memory
-            nifti_data = nib.load(BytesIO(response['Body'].read()))
-            print(f"Successfully loaded {subject_id}")
-            return nifti_data
+            # Load using a temporary file (nibabel requires a file path)
+            with tempfile.NamedTemporaryFile(suffix='.nii.gz', delete=False) as tmp:
+                tmp.write(response['Body'].read())
+                tmp_path = tmp.name
+            
+            try:
+                # Load image from temp file
+                img = nib.load(tmp_path)
+                # Load data into memory to allow file deletion
+                # unique naming to avoid shadowing
+                data = np.asanyarray(img.dataobj)
+                new_img = nib.Nifti1Image(data, img.affine, img.header)
+                print(f"Successfully loaded {subject_id}")
+                return new_img
+            finally:
+                # Clean up temp file
+                if os.path.exists(tmp_path):
+                    try:
+                        os.remove(tmp_path)
+                    except Exception as e:
+                        print(f"Warning: Could not remove temp file {tmp_path}: {e}")
             
         except ClientError as e:
             print(f"Error downloading {subject_id}: {e}")
