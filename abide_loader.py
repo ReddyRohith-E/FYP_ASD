@@ -55,6 +55,12 @@ def load_abide_dataset(
     
     if pheno_df is None:
         raise RuntimeError("Could not load phenotypic data.")
+
+    # Clean obvious bad/missing file IDs to avoid S3 404s
+    if 'FILE_ID' in pheno_df.columns:
+        pheno_df = pheno_df.dropna(subset=['FILE_ID']).copy()
+        pheno_df['FILE_ID'] = pheno_df['FILE_ID'].astype(str).str.strip()
+        pheno_df = pheno_df[pheno_df['FILE_ID'].str.lower() != 'no_filename']
         
     filter_tool = ABIDEDataFilter(pheno_df)
     

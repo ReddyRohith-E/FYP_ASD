@@ -36,7 +36,12 @@ class S3ABIDEClient:
     
     def __init__(self, use_anonymous: bool = True):
         if use_anonymous:
-            cfg = Config(signature_version=UNSIGNED)
+            cfg = Config(
+                signature_version=UNSIGNED,
+                connect_timeout=60,
+                read_timeout=300,
+                retries={'max_attempts': 3}
+            )
             self.s3_client = boto3.client('s3', region_name=ABIDE_REGION, config=cfg)
             self.s3_resource = boto3.resource('s3', region_name=ABIDE_REGION, config=cfg)
         else:
@@ -120,7 +125,14 @@ class S3ABIDEClient:
             # Construct S3 path
             s3_path = f'{ABIDE_PREFIX}Outputs/{pipeline}/{strategy}/{derivative}/{subject_id}_{derivative}.nii.gz'
             
-            print(f"Downloading {subject_id} from S3...")
+            # Get file size first
+            try:
+                head = self.s3_client.head_object(Bucket=ABIDE_BUCKET, Key=s3_path)
+                file_size_mb = head['ContentLength'] / (1024 * 1024)
+                print(f"Downloading {subject_id} ({file_size_mb:.1f} MB) from S3...", end=' ', flush=True)
+            except:
+                print(f"Downloading {subject_id} from S3...", end=' ', flush=True)
+            
             # Get object from S3
             response = self.s3_client.get_object(
                 Bucket=ABIDE_BUCKET,
@@ -139,7 +151,7 @@ class S3ABIDEClient:
                 # unique naming to avoid shadowing
                 data = np.asanyarray(img.dataobj)
                 new_img = nib.Nifti1Image(data, img.affine, img.header)
-                print(f"Successfully loaded {subject_id}")
+                print("✓ OK")
                 return new_img
             finally:
                 # Clean up temp file
@@ -150,10 +162,11 @@ class S3ABIDEClient:
                         print(f"Warning: Could not remove temp file {tmp_path}: {e}")
             
         except ClientError as e:
-            print(f"Error downloading {subject_id}: {e}")
+            error_code = e.response.get('Error', {}).get('Code', 'Unknown')
+            print(f"✗ FAILED ({error_code})")
             return None
         except Exception as e:
-            print(f"Unexpected error loading {subject_id} from S3: {e}")
+            print(f"✗ ERROR ({str(e)[:50]})")
             return None
     
     def get_subject_data(self, subject_id):
