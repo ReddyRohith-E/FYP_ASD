@@ -18,6 +18,11 @@ import os
 # Get the absolute path to the directory where this script is located
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# Verify BASE_DIR path
+if not os.path.exists(BASE_DIR):
+    # Fallback to script's parent directory
+    BASE_DIR = r'C:\Users\eredd\Desktop\FYP_ASD\streamlit_model_tester'
+
 # ===========================
 # PAGE CONFIGURATION
 # ===========================
@@ -63,21 +68,37 @@ def load_model_artifacts():
     """Load the trained XGBoost model and preprocessing artifacts"""
     try:
         model_path = os.path.join(BASE_DIR, 'asd_model.pkl')
+        if not os.path.exists(model_path):
+            st.error(f"❌ Model file not found at: {model_path}")
+            return None
         artifacts = joblib.load(model_path)
         return artifacts
     except Exception as e:
-        st.error(f"❌ Error loading model: {e}")
+        st.error(f"❌ Error loading model: {str(e)}")
         return None
 
 @st.cache_data
 def load_features_data():
     """Load the feature engineering data"""
     try:
+        # Try to load the full dataset first (all 1,112 samples)
+        data_path = os.path.join(BASE_DIR, 'asd_model_features_all.csv')
+        if os.path.exists(data_path):
+            df = pd.read_csv(data_path)
+            st.info(f"✓ Loaded full dataset: {len(df)} samples")
+            return df
+        
+        # Fallback to training dataset if full dataset not available
         data_path = os.path.join(BASE_DIR, 'asd_model_features.csv')
-        df = pd.read_csv(data_path)
-        return df
+        if os.path.exists(data_path):
+            df = pd.read_csv(data_path)
+            st.info(f"⚠ Full dataset not found. Using training set: {len(df)} samples")
+            return df
+        
+        st.error(f"❌ Features file not found")
+        return None
     except Exception as e:
-        st.error(f"❌ Error loading features: {e}")
+        st.error(f"❌ Error loading features: {str(e)}")
         return None
 
 @st.cache_data
@@ -85,10 +106,13 @@ def load_metrics():
     """Load model performance metrics from CSV"""
     try:
         metrics_path = os.path.join(BASE_DIR, 'asd_model_metrics.csv')
+        if not os.path.exists(metrics_path):
+            st.error(f"❌ Metrics file not found at: {metrics_path}")
+            return None
         metrics = pd.read_csv(metrics_path)
         return metrics
     except Exception as e:
-        st.error(f"❌ Error loading metrics: {e}")
+        st.error(f"❌ Error loading metrics: {str(e)}")
         return None
 
 # ===========================
