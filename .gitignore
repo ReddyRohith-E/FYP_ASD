@@ -2,6 +2,7 @@
 *.nii.gz
 abide1_fmri_data/
 abide_download/
+*.tex
 
 # Python
 __pycache__/
