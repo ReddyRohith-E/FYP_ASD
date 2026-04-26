@@ -3,6 +3,7 @@
 abide1_fmri_data/
 abide_download/
 *.tex
+*.bib
 
 # Python
 __pycache__/
