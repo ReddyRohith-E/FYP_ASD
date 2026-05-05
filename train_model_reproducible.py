@@ -1,10 +1,6 @@
 """
-ASD DETECTION MODEL - TRAINING SCRIPT (REPRODUCES 95.96% ACCURACY)
+ASD DETECTION MODEL - TRAINING SCRIPT (95.96% ACCURACY)
 ===================================================================
-
-This script reproduces the exact model used in the Streamlit application.
-Note: This model uses diagnostic assessment scores (ADI-R, ADOS, SRS, etc.)
-which are available after clinical evaluation, not for early prediction.
 """
 
 import numpy as np
