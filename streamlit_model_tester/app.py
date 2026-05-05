@@ -959,9 +959,9 @@ Preprocessing: RobustScaler
         st.markdown("## 📝 Version Information")
         
         st.info(textwrap.dedent("""
-        **Application Version**: 2.0
+        **Application Version**: 3.0
         **Model Version**: XGBoost (300 estimators)
-        **Last Updated**: January 20, 2026
+        **Last Updated**: Feb 15, 2026
         **Status**: Production Ready ✅
         """))
 
