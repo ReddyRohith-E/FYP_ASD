@@ -239,17 +239,17 @@ def main():
         'metrics': metrics
     }
     
-    joblib.dump(model_artifacts, 'improved_asd_model_FIXED.pkl')
-    print("✓ improved_asd_model_FIXED.pkl")
+    joblib.dump(model_artifacts, 'asd_mode.pkl')
+    print("✓ asd_model.pkl")
     
     # Save feature data
     feature_df = df[feature_names + ['label_asd', 'SUB_ID']].copy()
-    feature_df.to_csv('improved_model_features_FIXED.csv', index=False)
-    print("✓ improved_model_features_FIXED.csv")
+    feature_df.to_csv('model_features.csv', index=False)
+    print("✓ model_features.csv")
     
     # Save metrics
-    pd.DataFrame([metrics]).to_csv('improved_model_metrics_FIXED.csv', index=False)
-    print("✓ improved_model_metrics_FIXED.csv")
+    pd.DataFrame([metrics]).to_csv('model_metrics.csv', index=False)
+    print("✓ model_metrics.csv")
     
     print("\n" + "="*80)
     print(f"COMPLETED: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
