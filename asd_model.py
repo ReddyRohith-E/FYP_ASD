@@ -1,4 +1,4 @@
-"""Improved ASD Detection Model
+"""ASD Detection Model
 """
 
 import numpy as np
@@ -308,7 +308,7 @@ def train_robust_model(X_train, X_test, y_train, y_test, feature_names):
 def main():
     """Main pipeline"""
     print("\n" + "="*80)
-    print("IMPROVED ASD DETECTION MODEL - ALL PROBLEMS FIXED")
+    print("ASD DETECTION MODEL")
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("="*80)
     
@@ -395,9 +395,9 @@ def main():
     print("SAVING RESULTS")
     print(f"{'='*80}")
     
-    feature_df.to_csv('improved_model_features_FIXED.csv', index=False)
-    pd.DataFrame([metrics]).to_csv('improved_model_metrics_FIXED.csv', index=False)
-    pd.DataFrame({'feature': selected_features}).to_csv('improved_selected_features_FIXED.csv', index=False)
+    feature_df.to_csv('model_features_FIXED.csv', index=False)
+    pd.DataFrame([metrics]).to_csv('model_metrics_FIXED.csv', index=False)
+    pd.DataFrame({'feature': selected_features}).to_csv('selected_features_FIXED.csv', index=False)
     
     # Save the trained model, selector, and scaler
     model_artifacts = {
@@ -408,12 +408,12 @@ def main():
         'selected_features': selected_features,
         'metrics': metrics
     }
-    joblib.dump(model_artifacts, 'improved_asd_model_FIXED.pkl')
+    joblib.dump(model_artifacts, 'asd_model.pkl')
     
-    print("✓ improved_model_features_FIXED.csv")
-    print("✓ improved_model_metrics_FIXED.csv")
-    print("✓ improved_selected_features_FIXED.csv")
-    print("✓ improved_asd_model_FIXED.pkl (trained model)")
+    print("✓ model_features_FIXED.csv")
+    print("✓ model_metrics_FIXED.csv")
+    print("✓ selected_features_FIXED.csv")
+    print("✓ asd_model.pkl (trained model)")
     
     # Final assessment
     print(f"\n{'='*80}")
@@ -428,11 +428,11 @@ def main():
     print(f"CV Range:      {metrics['cv_accuracy_min']:.4f} - {metrics['cv_accuracy_max']:.4f}")
     
     if cv_acc > 0.85:
-        print(f"\n✅ EXCELLENT: Model shows strong predictive performance")
+        print(f"\n EXCELLENT: Model shows strong predictive performance")
     elif cv_acc > 0.75:
-        print(f"\n✓ GOOD: Model shows reasonable predictive performance")
+        print(f"\n GOOD: Model shows reasonable predictive performance")
     elif cv_acc > 0.65:
-        print(f"\n⚠ MODERATE: Model shows moderate predictive performance")
+        print(f"\nMODERATE: Model shows moderate predictive performance")
     else:
         print(f"\n⚠ LIMITED: Model performance is limited")
     
